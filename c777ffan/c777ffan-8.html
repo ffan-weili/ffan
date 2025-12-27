@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风光</title>
+    <link rel="stylesheet" href="style8.css">
+</head>
+<body>
+    <header>
+        <h1 style=" padding-top: 15px;">世界风光</h1>
+        <h2 style="font-family:Yu Gothic Light; padding-top: 5px;">World Scenery</h2>
+    </header>
+    
+    <div class="content">
+        <p>
+            <a href="c777ffan-1.html" class="back-btn">返回首页</a >
+            <a href="c777ffan-2.html" class="back-btn">返回风格列表</a >
+        </p >
+        
+        <h2 style="color: #333;">摄影手记</h2>
+
+        <p>我镜头里的世界风光，从不是刻板的打卡式记录。</p >
+        
+        <p>偏爱蹲守晨昏时分的鎏金光线，捕捉雪山与湖泊相拥的静谧，定格海浪撞碎礁石的磅礴，让每一寸土地的肌理与呼吸，都藏进画面的明暗褶皱里。</p >
+        
+        <p>不求把风景拍得有多“惊艳”，只求按下快门的瞬间，能留住这片天地独有的风骨与故事。</p >
+        
+        <p>下面是我的一些摄影作品：</p >
+        
+        <ul>
+            <li>
+                <div class="photo-title">小冒险家</div>
+                <div class="photo-date">拍摄时间：2025年11月 拍摄地点：宁波</div>
+                 <img src="photo/微信图片_20251226184315_476_3.jpg" alt="城市少女" width="315">
+                 <img src="photo/微信图片_20251226184317_478_3.jpg" alt="城市少女" width="315">
+                 <img src="photo/微信图片_20251226184427_479_3.jpg" alt="城市少女" width="315">
+                <p>Starlit Sky</p >
+                <button onclick="likePhoto(this)">喜欢这张照片</button>
+                <span style="font-size: 14px;">喜欢数：<span class="photoLikes">0</span></span>
+            </li>
+            
+            <li>
+                <div class="photo-title">一瞬星芒</div>
+                <div class="photo-date">拍摄时间：2025年12月 拍摄地点：宁波</div>
+                <img src="photo/微信图片_20251226184548_480_3.jpg" alt="阳光下的微笑" width="493">
+                <img src="photo/微信图片_20251226184549_481_3.jpg" alt="阳光下的微笑" width="493">
+                <p>并不是黑色的天幕</p >
+                <button onclick="likePhoto(this)">喜欢这张照片</button>
+                <span style="font-size: 14px;"> 喜欢数：<span class="photoLikes">0</span></span>
+            </li>
+            
+            <li>
+                <div class="photo-title">风渡林湖</div>
+                <div class="photo-date">拍摄时间：2025年6月 拍摄地点：新疆</div>
+                <img src="photo/微信图片_20251226184550_482_3.jpg" alt="黑白肖像" width="493">
+                <img src="photo/微信图片_20251226184551_483_3.jpg" alt="黑白肖像" width="493">
+                <p>最治愈的样子like this→</p >
+                <button onclick="likePhoto(this)">喜欢这张照片</button>
+                <span style="font-size: 14px;"> 喜欢数：<span class="photoLikes">0</span></span>
+            </li>
+        </ul>
+        
+        <div style="margin-top: 20px; padding: 10px;">
+            <p>本页作品统计：共 9 张作品，总喜欢数：<span id="totalLikes">0</span></p >
+        </div>
+       
+        <h2 style="color: #333; margin-top: 40px;">常用设备</h2>
+        
+        <ul>
+            <li>相机：sony a7c2 ; 富士xt20</li>
+            <li>其他：反光板、三脚架、打光灯</li>
+        </ul>
+        
+        <p style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+            <a href="c777ffan-2.html">← 返回摄影风格列表</a >
+        </p >
+    </div>
+    <script>
+        window.onload = function() {
+            initPhotoLikes();
+        };
+        
+        function likePhoto(buttonElement) {
+            var likesSpan = buttonElement.nextElementSibling.querySelector(".photoLikes");
+            
+            var currentLikes = parseInt(likesSpan.innerHTML);
+            currentLikes++;
+            likesSpan.innerHTML = currentLikes;
+            
+            updateTotalLikes();
+            
+            var photoTitle = buttonElement.parentElement.getElementsByClassName("photo-title")[0].textContent;
+            localStorage.setItem("like_" + photoTitle, currentLikes);
+            
+            buttonElement.innerHTML = "已喜欢";
+            buttonElement.disabled = true;
+            buttonElement.style.backgroundColor = "#ccc";
+        }
+
+        function initPhotoLikes() {
+            var photoLikesElements = document.getElementsByClassName("photoLikes");
+            
+            for (var i = 0; i < photoLikesElements.length; i++) {
+                var photoTitle = photoLikesElements[i].parentElement.parentElement.getElementsByClassName("photo-title")[0].textContent;
+                
+                var savedLikes = localStorage.getItem("like_" + photoTitle);
+                
+                if (savedLikes) {
+                    photoLikesElements[i].innerHTML = savedLikes;
+                    
+                    if (parseInt(savedLikes) > 0) {
+                        var button = photoLikesElements[i].parentElement.querySelector("button");
+                        button.innerHTML = "已喜欢";
+                        button.disabled = true;
+                        button.style.backgroundColor = "#ccc";
+                    }
+                }
+            }
+            
+            updateTotalLikes();
+        }
+
+        function updateTotalLikes() {
+            var photoLikesElements = document.getElementsByClassName("photoLikes");
+            var total = 0;
+            
+            for (var i = 0; i < photoLikesElements.length; i++) {
+                total += parseInt(photoLikesElements[i].innerHTML);
+            }
+            
+            document.getElementById("totalLikes").innerHTML = total;
+        }
+    </script>
+    
+    <footer>
+        <p>© 2025 ffan 版权所有</p >
+    </footer>
+</body>
+</html>
